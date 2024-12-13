@@ -1,3 +1,9 @@
+dosfstools (4.2-deepin1) stable; urgency=medium
+
+  * fix range check for signed char.
+
+ -- xinpeng.wang <wangxinpeng@uniontech.com>  Fri, 13 Dec 2024 15:40:06 +0800
+
 dosfstools (4.2-deepin) stable; urgency=medium
 
   * ['Rebuild  against by  current gcc 11.2']
