@@ -1,0 +1,28 @@
+From c888797b1d84ffbb949f147e3116e8bfb2e145a7 Mon Sep 17 00:00:00 2001
+From: John Keeping <john@metanate.com>
+Date: Mon, 25 Jul 2022 12:11:44 +0100
+Subject: [PATCH] fatlabel: fix range check for signed characters
+
+char may be either signed or unsigned and if it is signed the "< 0x20"
+comparison will reject any values >= 0x80 even though these are valid
+characters in a label.
+
+Cast to an unsigned type to ensure the full range of valid characters
+are accepted.
+---
+ src/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/common.c b/src/common.c
+index 4f1afcb..8b6ac7a 100644
+--- a/src/common.c
++++ b/src/common.c
+@@ -360,7 +360,7 @@ int validate_volume_label(char *doslabel)
+        code page) are not allowed.
+      */
+     for (i = 0; i < 11; i++) {
+-        if (doslabel[i] < 0x20)
++        if ((unsigned) doslabel[i] < 0x20)
+             ret |= 0x02;
+         if (doslabel[i] == 0x22 ||
+             (doslabel[i] >= 0x2A && doslabel[i] <= 0x2C) ||
